@@ -1,16 +1,32 @@
-require 'ecb_rates/version'
-require 'ecb_rates/application'
-require 'ecb_rates/config'
-require 'ecb_rates/exchange_rates'
+require 'nokogiri'
+require_relative 'ecb_rates/version'
+require_relative 'ecb_rates/application'
+require_relative 'ecb_rates/exchange_rates'
 
 module EcbRates
-  $LOAD_PATH.unshift(File.dirname(__FILE__))
+  TODAY_RATES_URL =
+    'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml'
+  HISTORY_RATES_URL =
+    'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml'
+  TIME_MARKUP = 'Cube[time="%s"]'
+  ANY_TIME_MARKUP = 'Cube[time]'
+  CURRENCY_MARKUP = 'Cube[currency="%s"]'
+  VALID_CURRENCIES = [
+    :USD, :JPY, :BGN, :CZK, :DKK, :GBP, :HUF, :PLN, :RON, :SEK, :CHF, :NOK,
+    :HRK, :RUB, :TRY, :AUD, :BRL, :CAD, :CNY, :HKD, :IDR, :ILS, :INR, :KRW,
+    :MXN, :MRY, :NZD, :PHP, :SGB, :THB, :ZAR
+  ]
 
-  class DateTooOld < StandardError; end
-  class CurrencyMissing < StandardError; end
-  class CurrencyNotSupported < StandardError; end
+  DateTooOld = Class.new StandardError
+  CurrencyMissing = Class.new StandardError
+  CurrencyNotSupported = Class.new StandardError
+  WebsiteUnavailable = Class.new StandardError
+  ExchangeRateSheetUnavailable = Class.new StandardError
 
-  def self.exchange_rate(currency, date = Date.today)
+  class << self
+    def exchange_rates_today
+  end
+  def self.exchange_rate currency, date=Date.today
     app = Application.new
     app.exchange_rate(currency, date)
   end
