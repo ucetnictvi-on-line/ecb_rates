@@ -1,0 +1,37 @@
+# **********************************************************
+# REFACTOR ecb_rates
+# **********************************************************
+# 
+# 1. Ukázkový kód z README souboru na mém stroji nechodí,
+# zjistit proč, napsat testy a napravit.
+# 
+# 2. Třída EcbRates::Application je přílišným krokem ve
+# směru objektové orientace. Odstranit a nahradit
+# funkcionálním programováním přímo na modulu EcbRates.
+# 
+# 3. Třídu EcbRates::ExchangeRates nahradit třídou
+# EcbRates::Sheet reprezentující kurzovní lístek. Expresi
+# ExchangeRates#exchange_rate_for(currency, rate) nahradit
+# konstruktory Sheet.today a Sheet.day(datum).
+# 
+# 4. Implementovat metodu Sheet#currency vracející kurz
+# Sheet.today.currency(:JPY)
+# Sheet.day('2016-07-10').currency(:JPY)
+# 
+# 5. Metaprogramováním zavést metody jednotlivých měn
+# EcbRates::Sheet.today.JPY,
+# EcbRates::Sheet.today.GBP,
+# EcbRates::Sheet.day('2016-07-10').USD
+# atd.
+# 
+# 6. Konstruktory .today a .day delegovat z EcbRates:
+# EcbRates.today.JPY
+# EcbRates.day(datum).JPY
+# 
+# 7. Metoda EcbRates.exchange_rate si zachová chování pro
+# kompatibilitu, datum si ale bude brát v první řadě z
+# ECB a až v druhé řadě z uživatelského stroje
+# (Date.today). Když se ECB a uživatelský stroj neshodují,
+# použil bych pouze warning.
+#
+# **********************************************************
